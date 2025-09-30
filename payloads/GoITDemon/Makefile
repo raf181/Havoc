@@ -5,14 +5,24 @@ VERSION = 1.0.0
 BUILD_DIR = bin
 LDFLAGS = -ldflags '-s -w -X main.AGENT_VERSION=$(VERSION)'
 
-.PHONY: all clean windows linux macos test deps
+.PHONY: all clean windows linux macos test deps service service-deps
 
-all: windows linux macos
+all: windows linux macos service
 
 # Install dependencies
 deps:
 	go mod tidy
 	go mod download
+
+# Install service dependencies
+service-deps:
+	cd service && go mod tidy && go mod download
+
+# Build service agent
+service: service-deps
+	@echo "Building GoITDemon service agent..."
+	@mkdir -p $(BUILD_DIR)
+	cd service && go build -o ../$(BUILD_DIR)/GoITDemon-Service .
 
 # Build for Windows
 windows:
