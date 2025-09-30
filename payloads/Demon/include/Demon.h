@@ -27,6 +27,7 @@
 #include <core/HwBpEngine.h>
 #include <core/CoffeeLdr.h>
 #include <core/Memory.h>
+#include <core/ITCommands.h>
 
 #ifdef DEBUG
 #include <stdio.h>
