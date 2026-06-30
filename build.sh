@@ -27,6 +27,7 @@ fi
 # 2. Build Teamserver
 echo -e "${BLUE}[*] Compiling teamserver (CGO-free)...${NC}"
 cd teamserver
+rm -f ../havoc
 CGO_ENABLED=0 go build -ldflags="-s -w -X cmd.VersionCommit=$(git rev-parse HEAD 2>/dev/null || echo 'unknown')" -o ../havoc main.go
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}[+] Teamserver compiled successfully as ./havoc${NC}"
