@@ -1,3 +1,6 @@
+//go:build goitdemon_caps
+// +build goitdemon_caps
+
 package main
 
 import (

@@ -36,6 +36,8 @@ include_directories( external/toml )
 ## find qt packages
 ##
 find_package( Qt${QT_VERSION} COMPONENTS ${REQUIRED_LIBS} REQUIRED )
+find_package( spdlog REQUIRED )
+find_package( fmt REQUIRED )
 
 ##
 ## apple support
@@ -194,6 +196,6 @@ target_link_libraries(
     ${PROJECT_NAME}
     ${REQUIRED_LIBS_QUALIFIED}
     ${PYTHON_LIBRARIES}
-    # spdlog::spdlog
-    # spdlog::spdlog_header_only
+  spdlog::spdlog
+  fmt::fmt
 )

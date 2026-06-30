@@ -934,6 +934,11 @@ bool Packager::DispatchService( Util::Packager::PPackage Package )
                 .BuildingConfig = QJsonDocument( JsonObject[ "BuildingConfig" ].toObject() ),
             } );
 
+            if ( HavocX::Teamserver.TabSession != nullptr && HavocX::Teamserver.TabSession->PayloadDialog != nullptr )
+            {
+                HavocX::Teamserver.TabSession->PayloadDialog->RefreshAgents();
+            }
+
             AgentName = JsonObject[ "Name" ].toString().toStdString();
 
             spdlog::info( "Added service agent to client: {}", AgentName );

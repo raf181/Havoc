@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -204,6 +205,11 @@ func (t *Teamserver) Start() {
 		} else {
 			logger.Error("Teamserver service error: Endpoint not specified")
 		}
+	}
+
+	goitdemonService := filepath.Join(TeamserverPath, "payloads", "GoITDemon", "start-service.sh")
+	if info, statErr := os.Stat(goitdemonService); statErr == nil && !info.IsDir() {
+		go t.launchGoITDemonService(goitdemonService)
 	}
 
 	/* now load up our db or start a new one if none exist */
@@ -492,6 +498,43 @@ func (t *Teamserver) Start() {
 	logger.Debug("Wait til the server shutdown")
 
 	<-ServerFinished
+}
+
+func (t *Teamserver) launchGoITDemonService(scriptPath string) {
+	serviceHost := t.Flags.Server.Host
+	if serviceHost == "" || serviceHost == "0.0.0.0" {
+		serviceHost = "127.0.0.1"
+	}
+
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Env = append(os.Environ(),
+		"TEAMSERVER_HOST="+serviceHost,
+		"TEAMSERVER_PORT="+t.Flags.Server.Port,
+	)
+
+	if t.Profile != nil && t.Profile.Config.Service != nil {
+		if endpoint := t.Profile.Config.Service.Endpoint; endpoint != "" {
+			cmd.Env = append(cmd.Env, "SERVICE_ENDPOINT="+endpoint)
+		}
+		if password := t.Profile.Config.Service.Password; password != "" {
+			cmd.Env = append(cmd.Env, "SERVICE_PASSWORD="+password)
+		}
+	}
+
+	if err := cmd.Start(); err != nil {
+		logger.Error("Failed to start GoITDemon service agent: " + err.Error())
+		return
+	}
+
+	go func() {
+		if err := cmd.Wait(); err != nil {
+			logger.Debug("GoITDemon service agent exited: " + err.Error())
+		}
+	}()
+
+	logger.Info("Auto-started GoITDemon service agent")
 }
 
 func (t *Teamserver) handleRequest(id string) {

@@ -19,6 +19,27 @@ Havoc works well on Debian 10/11, Ubuntu 20.04/22.04 and Kali Linux. It's recomm
 
 See the [Installation](https://havocframework.com/docs/installation) docs for instructions. If you run into issues, check the [Known Issues](https://github.com/HavocFramework/Havoc/wiki#known-issues) page as well as the open/closed [Issues](https://github.com/HavocFramework/Havoc/issues) list.
 
+### Build Notes
+
+Teamserver prerequisites: Go 1.18+.
+
+Teamserver build:
+```bash
+cd teamserver
+GO111MODULE=on go build -o ../havoc main.go
+```
+
+Client prerequisites on Fedora: `cmake`, `gcc-c++`, `python3-devel`, `nlohmann-json-devel`, `spdlog-devel`, `fmt-devel`, `toml11-devel`, `qt5-qtbase-devel`, `qt5-qtwebsockets-devel`.
+
+Client build:
+```bash
+cd client
+mkdir -p Build
+cd Build
+cmake ..
+cmake --build . -- -j 4
+```
+
 ---
 
 ### Features

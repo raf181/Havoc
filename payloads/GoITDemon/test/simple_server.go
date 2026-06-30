@@ -1,3 +1,6 @@
+//go:build goitdemon_simple
+// +build goitdemon_simple
+
 package main
 
 import (

@@ -62,6 +62,7 @@ public:
     auto Start() -> void;
 
     auto Clear() -> void;
+    auto RefreshAgents() -> void;
     auto ReceivedImplantAndSave( QString Format, QByteArray ImplantArray )  -> void;
 
     auto AddConfigFromJson( QJsonDocument JsonConfig ) -> void;

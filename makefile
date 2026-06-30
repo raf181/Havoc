@@ -10,7 +10,9 @@ ts-build:
 	@ echo "[*] building teamserver"
 	@ ./teamserver/Install.sh
 	@ cd teamserver; GO111MODULE="on" go build -ldflags="-s -w -X cmd.VersionCommit=$(git rev-parse HEAD)" -o ../havoc main.go
-	@ sudo setcap 'cap_net_bind_service=+ep' havoc # this allows you to run the server as a regular user
+	@ sudo cp ../havoc /usr/local/bin/havoc
+	@ sudo chmod 755 /usr/local/bin/havoc
+	@ sudo setcap 'cap_net_bind_service=+ep' /usr/local/bin/havoc
 
 dev-ts-compile:
 	@ echo "[*] compile teamserver"
@@ -49,3 +51,7 @@ client-cleanup:
 clean: ts-cleanup client-cleanup
 	@ rm -rf ./data/*.db
 	@ rm -rf payloads/Demon/.idea
+
+# quick build notes
+# teamserver: requires Go 1.18+; build with `cd teamserver && GO111MODULE=on go build -o ../havoc main.go`
+# client: requires cmake, gcc-c++, python3-devel, nlohmann-json-devel, qt5-qtbase-devel, qt5-qtwebsockets-devel; build with `cd client && mkdir -p Build && cd Build && cmake .. && cmake --build . -- -j 4`

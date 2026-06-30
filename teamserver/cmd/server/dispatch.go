@@ -510,6 +510,11 @@ func (t *Teamserver) DispatchEvent(pk packager.Package) {
 						}
 						return true
 					})
+				} else {
+					var listenerEvent = pk
+					listenerEvent.Head.User = ""
+					t.EventAppend(listenerEvent)
+					t.EventBroadcast("", listenerEvent)
 				}
 
 				break
@@ -543,6 +548,11 @@ func (t *Teamserver) DispatchEvent(pk packager.Package) {
 						}
 						return true
 					})
+				} else {
+					var listenerEvent = pk
+					listenerEvent.Head.User = ""
+					t.EventAppend(listenerEvent)
+					t.EventBroadcast("", listenerEvent)
 				}
 
 				break
@@ -577,6 +587,11 @@ func (t *Teamserver) DispatchEvent(pk packager.Package) {
 						}
 						return true
 					})
+				} else {
+					var listenerEvent = pk
+					listenerEvent.Head.User = ""
+					t.EventAppend(listenerEvent)
+					t.EventBroadcast("", listenerEvent)
 				}
 
 				break

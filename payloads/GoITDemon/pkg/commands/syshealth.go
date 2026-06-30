@@ -43,26 +43,31 @@ func (s *SysHealthHandler) Handle(data []byte) ([]byte, error) {
 // getDiskUsage returns disk usage information
 func (s *SysHealthHandler) getDiskUsage() ([]byte, error) {
 	buf := new(bytes.Buffer)
+	entries := new(bytes.Buffer)
+	var count uint32
 	
 	partitions, err := disk.Partitions(false)
 	if err != nil {
 		return writeError(err), nil
 	}
 	
-	binary.Write(buf, binary.LittleEndian, uint32(len(partitions)))
 	for _, partition := range partitions {
 		usage, err := disk.Usage(partition.Mountpoint)
 		if err != nil {
 			continue
 		}
 		
-		writeString(buf, partition.Device)
-		writeString(buf, partition.Mountpoint)
-		binary.Write(buf, binary.LittleEndian, usage.Total)
-		binary.Write(buf, binary.LittleEndian, usage.Used)
-		binary.Write(buf, binary.LittleEndian, usage.Free)
-		binary.Write(buf, binary.LittleEndian, usage.UsedPercent)
+		count++
+		writeString(entries, partition.Device)
+		writeString(entries, partition.Mountpoint)
+		binary.Write(entries, binary.LittleEndian, usage.Total)
+		binary.Write(entries, binary.LittleEndian, usage.Used)
+		binary.Write(entries, binary.LittleEndian, usage.Free)
+		binary.Write(entries, binary.LittleEndian, usage.UsedPercent)
 	}
+
+	binary.Write(buf, binary.LittleEndian, count)
+	buf.Write(entries.Bytes())
 	
 	return writeSuccess(buf.Bytes()), nil
 }

@@ -286,8 +286,10 @@ func handleBuildRequest(conn *websocket.Conn, message map[string]interface{}) {
 }
 
 func buildAgent(config, options map[string]interface{}) ([]byte, error) {
-	// Get current working directory
-	workDir := "/home/anoam/Havoc/payloads/GoITDemon"
+	workDir, err := resolveWorkDir()
+	if err != nil {
+		return nil, err
+	}
 
 	// Extract configuration
 	listener := options["Listener"].(map[string]interface{})
@@ -386,6 +388,31 @@ func buildAgent(config, options map[string]interface{}) ([]byte, error) {
 
 	log.Printf("[+] Successfully built %s (%d bytes)", outputName, len(payload))
 	return payload, nil
+}
+
+func resolveWorkDir() (string, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", fmt.Errorf("failed to determine working directory: %v", err)
+	}
+
+	for {
+		goModPath := filepath.Join(dir, "go.mod")
+		pkgPath := filepath.Join(dir, "pkg")
+		if _, err := os.Stat(goModPath); err == nil {
+			if info, err := os.Stat(pkgPath); err == nil && info.IsDir() {
+				return dir, nil
+			}
+		}
+
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+
+	return "", fmt.Errorf("failed to locate GoITDemon source tree from %s", dir)
 }
 
 func generateMainGo(config map[string]interface{}, listener map[string]interface{}) string {

@@ -726,6 +726,13 @@ auto Payload::GetConfigAsJson() -> QJsonDocument
 
 auto Payload::Start() -> void
 {
+    RefreshAgents();
+
+    PayloadDialog->show();
+}
+
+auto Payload::RefreshAgents() -> void
+{
     ComboAgentType->clear();
     ComboListener->clear();
     ComboFormat->clear();
@@ -734,6 +741,4 @@ auto Payload::Start() -> void
     TreeConfig->clear();
 
     retranslateUi();
-
-    PayloadDialog->show();
 }

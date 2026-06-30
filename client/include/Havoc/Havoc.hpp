@@ -9,7 +9,7 @@ using namespace HavocNamespace;
 
 class HavocSpace::Havoc {
 
-    using toml_t = toml::basic_value<toml::discard_comments, unordered_map, vector>;;
+    using toml_t = toml::value;
 
 public:
     toml_t Config;

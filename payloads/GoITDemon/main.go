@@ -19,7 +19,7 @@ const (
 	// Agent identification
 	AGENT_TYPE    = "GoITDemon"
 	AGENT_VERSION = "1.0.0"
-	MAGIC_VALUE   = 0xDEADBEEF // Use standard Demon magic value for compatibility
+	MAGIC_VALUE   = 0x474f4954 // GOIT
 
 	// Default configuration - will be replaced during build
 	DEFAULT_SLEEP     = 5000
