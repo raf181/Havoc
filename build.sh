@@ -56,7 +56,7 @@ mkdir -p client/Build
 cd client/Build
 cmake ..
 if [ $? -eq 0 ]; then
-    cmake --build . -- -j$(nproc 2>/dev/null || echo 4)
+    cmake --build . -- -j2
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}[+] Client compiled successfully!${NC}"
     else
