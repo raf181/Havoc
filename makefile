@@ -9,14 +9,14 @@ all: ts-build client-build
 ts-build:
 	@ echo "[*] building teamserver"
 	@ ./teamserver/Install.sh
-	@ cd teamserver; GO111MODULE="on" go build -ldflags="-s -w -X cmd.VersionCommit=$(git rev-parse HEAD)" -o ../havoc main.go
+	@ cd teamserver; GO111MODULE="on" CGO_ENABLED=0 go build -ldflags="-s -w -X cmd.VersionCommit=$(git rev-parse HEAD)" -o ../havoc main.go
 	@ sudo cp ../havoc /usr/local/bin/havoc
 	@ sudo chmod 755 /usr/local/bin/havoc
 	@ sudo setcap 'cap_net_bind_service=+ep' /usr/local/bin/havoc
 
 dev-ts-compile:
 	@ echo "[*] compile teamserver"
-	@ cd teamserver; GO111MODULE="on" go build -ldflags="-s -w -X cmd.VersionCommit=$(git rev-parse HEAD)" -o ../havoc main.go 
+	@ cd teamserver; GO111MODULE="on" CGO_ENABLED=0 go build -ldflags="-s -w -X cmd.VersionCommit=$(git rev-parse HEAD)" -o ../havoc main.go 
 
 ts-cleanup: 
 	@ echo "[*] teamserver cleanup"

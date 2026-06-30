@@ -1,6 +1,5 @@
 package server
 
-import "C"
 import (
 	"Havoc/pkg/agent"
 	"Havoc/pkg/common/certs"
