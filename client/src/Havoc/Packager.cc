@@ -235,7 +235,8 @@ bool Packager::DispatchListener( Util::Packager::PPackage Package )
                 .Status   = Package->Body.Info[ "Status" ],
             };
 
-            if ( ListenerInfo.Protocol == Listener::PayloadHTTP.toStdString() )
+              if ( ListenerInfo.Protocol == Listener::PayloadHTTP.toStdString() ||
+                  ListenerInfo.Protocol == Listener::PayloadHTTPS.toStdString() )
             {
                 auto Headers = QStringList();
                 for ( auto& header : QString( Package->Body.Info[ "Headers" ].c_str() ).split( ", " ) ) {
@@ -373,7 +374,8 @@ bool Packager::DispatchListener( Util::Packager::PPackage Package )
                     .Status   = Package->Body.Info[ "Status" ],
             };
 
-            if ( ListenerInfo.Protocol == Listener::PayloadHTTP.toStdString() )
+              if ( ListenerInfo.Protocol == Listener::PayloadHTTP.toStdString() ||
+                  ListenerInfo.Protocol == Listener::PayloadHTTPS.toStdString() )
             {
                 auto Headers = QStringList();
                 for ( auto& header : QString( Package->Body.Info[ "Headers" ].c_str() ).split( ", " ) )

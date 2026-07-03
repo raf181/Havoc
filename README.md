@@ -3,7 +3,7 @@
   <h1>Havoc</h1>
   <br/>
 
-  <p><i>Havoc is a modern and malleable post-exploitation command and control framework, created by <a href="https://twitter.com/C5pider">@C5pider</a>.</i></p>
+  <p><i>This is a personal project to continue development of the original Havoc C2 framework. Credit for the original project goes to C5pider and the upstream repository at <a href="https://github.com/HavocFramework/Havoc">https://github.com/HavocFramework/Havoc</a>.</i></p>
   <br />
 
   <img src="assets/Screenshots/FullSessionGraph.jpeg" width="90%" /><br />
@@ -15,6 +15,8 @@
 
 > Please see the [Wiki](https://github.com/HavocFramework/Havoc/wiki) for complete documentation.
 
+This repository is maintained as an independent continuation of the original Havoc C2 project.
+
 Havoc works well on Debian 10/11, Ubuntu 20.04/22.04 and Kali Linux. It's recommended to use the latest versions possible to avoid issues. You'll need a modern version of Qt and Python 3.10.x to avoid build issues.
 
 See the [Installation](https://havocframework.com/docs/installation) docs for instructions. If you run into issues, check the [Known Issues](https://github.com/HavocFramework/Havoc/wiki#known-issues) page as well as the open/closed [Issues](https://github.com/HavocFramework/Havoc/issues) list.
@@ -24,6 +26,7 @@ See the [Installation](https://havocframework.com/docs/installation) docs for in
 Teamserver prerequisites: Go 1.18+.
 
 Teamserver build:
+
 ```bash
 cd teamserver
 GO111MODULE=on go build -o ../havoc main.go
@@ -32,6 +35,7 @@ GO111MODULE=on go build -o ../havoc main.go
 Client prerequisites on Fedora: `cmake`, `gcc-c++`, `python3-devel`, `nlohmann-json-devel`, `spdlog-devel`, `fmt-devel`, `toml11-devel`, `qt5-qtbase-devel`, `qt5-qtwebsockets-devel`.
 
 Client build:
+
 ```bash
 cd client
 mkdir -p Build
@@ -50,7 +54,6 @@ cmake --build . -- -j 4
 
 - Modern, dark theme based on [Dracula](https://draculatheme.com/)
 
-
 #### Teamserver
 
 > Written in Golang
@@ -58,7 +61,7 @@ cmake --build . -- -j 4
 - Multiplayer
 - Payload generation (exe/shellcode/dll)
 - HTTP/HTTPS listeners
-- Customizable C2 profiles 
+- Customizable C2 profiles
 - External C2
 
 #### Demon
@@ -73,7 +76,7 @@ cmake --build . -- -j 4
 - Variety of built-in post-exploitation commands
 - Patching Amsi/Etw via Hardware breakpoints
 - Proxy library loading
-- Stack duplication during sleep. 
+- Stack duplication during sleep.
 
 <div align="center">
   <img src="assets/Screenshots/SessionConsoleHelp.png" width="90%" /><br />
@@ -87,14 +90,3 @@ cmake --build . -- -j 4
 - [Python API](https://github.com/HavocFramework/havoc-py)
 - [Modules](https://github.com/HavocFramework/Modules)
 
----
-
-### Community
-
-You can join the official [Havoc Discord](https://discord.gg/z3PF3NRDE5) to chat with the community! 
-
-### Note
-
-Please do not open any issues regarding detection. 
-
-The Havoc Framework hasn't been developed to be evasive. Rather it has been designed to be as malleable & modular as possible. Giving the operator the capability to add custom features or modules that evades their targets detection system. 
